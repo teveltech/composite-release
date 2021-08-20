@@ -7,7 +7,10 @@ inputs
     description: 'The new tag to push'
   prerelease:
     required: true
-    description: 'The new tag to push'
+    description: 'Whether the release is a pre-release or not'
+  namespace:
+    required: true
+    description: 'The package namespace'
     
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -23,38 +26,38 @@ inputs
       - name: Create Tag
         shell: bash
         run: |
-          if [ -n ${{ needs.version.outputs.new_tag }} ]; then
-            if [ '${{ needs.version.outputs.prerelease }}' = 'true' ]; then
-              git tag ${{ needs.version.outputs.new_tag }} &&
-              git push --force origin ${{ needs.version.outputs.new_tag }} &&
-              echo "New lightweight tag: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/${{ needs.version.outputs.new_tag }}"
+          if [ -n ${{ inputs.new_tag }} ]; then
+            if [ '${{ inputs.prerelease }}' = 'true' ]; then
+              git tag ${{ inputs.new_tag }} &&
+              git push --force origin ${{ inputs.new_tag }} &&
+              echo "New lightweight tag: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/${{ inputs.new_tag }}"
             else
-              git tag -a ${{ needs.version.outputs.new_tag }} -m "${{ github.event.head_commit.message }}" &&
-              git push --force origin ${{ needs.version.outputs.new_tag }} &&
-              echo "New annotated tag: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/${{ needs.version.outputs.new_tag }}"
+              git tag -a ${{ inputs.new_tag }} -m "${{ github.event.head_commit.message }}" &&
+              git push --force origin ${{ inputs.new_tag }} &&
+              echo "New annotated tag: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/${{ inputs.new_tag }}"
             fi
           fi
           
       - name: Create a GitHub release
         id: release
-        if: ${{ needs.version.outputs.new_tag }}
+#         if: ${{ inputs.new_tag }}
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          prerelease: ${{ needs.version.outputs.prerelease }}
-          tag_name: ${{ needs.version.outputs.new_tag }}
-          name: Release ${{ needs.version.outputs.new_tag }}
+          prerelease: ${{ inputs.prerelease }}
+          tag_name: ${{ inputs.new_tag }}
+          name: Release ${{ inputs.new_tag }}
           body: |
             Docker pull command:
-            <pre><code> docker pull jfrog.local:8081/reg/${{ env.namespace }}/${{ github.event.repository.name }}:${{ needs.version.outputs.new_tag }} </code></pre>
+            <pre><code> docker pull jfrog.local:8081/reg/${{ inputs.namespace }}/${{ github.event.repository.name }}:${{ inputs.new_tag }} </code></pre>
             
       - name: set warning
         shell: bash
         run: |
           STRING="New release: ${{ steps.release.outputs.url }}
           Docker pull command:
-          docker pull jfrog.local:8081/reg/${{ env.namespace }}/${{ github.event.repository.name }}:${{ needs.version.outputs.new_tag }}"
+          docker pull jfrog.local:8081/reg/${{ inputs.namespace }}/${{ github.event.repository.name }}:${{ inputs.new_tag }}"
           STRING="${STRING//'%'/'%25'}"
           STRING="${STRING//$'\n'/'%0A'}"
           STRING="${STRING//$'\r'/'%0D'}"
