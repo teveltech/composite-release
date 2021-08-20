@@ -1,7 +1,7 @@
 name: 'Release composite action'
 description: 'A composite action to handle git tag and github release'
 
-inputs
+inputs:
   new_tag:
     required: true
     description: 'The new tag to push'
