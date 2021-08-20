@@ -23,6 +23,7 @@ runs:
         uses: actions/checkout@v2
 
       - name: git config
+        shell: bash
         run: |
           git config user.email "Tevel GitHub Runner"
           git config user.name "Tevel GitHub Runner"
