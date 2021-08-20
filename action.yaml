@@ -1,0 +1,61 @@
+name: 'Release composite action'
+description: 'A composite action to handle git tag and github release'
+
+inputs
+  new_tag:
+    required: true
+    description: 'The new tag to push'
+  prerelease:
+    required: true
+    description: 'The new tag to push'
+    
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: git config
+        run: |
+          git config user.email "Tevel GitHub Runner"
+          git config user.name "Tevel GitHub Runner"
+          
+      # note: adding a message would create an annotated tag
+      - name: Create Tag
+        shell: bash
+        run: |
+          if [ -n ${{ needs.version.outputs.new_tag }} ]; then
+            if [ '${{ needs.version.outputs.prerelease }}' = 'true' ]; then
+              git tag ${{ needs.version.outputs.new_tag }} &&
+              git push --force origin ${{ needs.version.outputs.new_tag }} &&
+              echo "New lightweight tag: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/${{ needs.version.outputs.new_tag }}"
+            else
+              git tag -a ${{ needs.version.outputs.new_tag }} -m "${{ github.event.head_commit.message }}" &&
+              git push --force origin ${{ needs.version.outputs.new_tag }} &&
+              echo "New annotated tag: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/${{ needs.version.outputs.new_tag }}"
+            fi
+          fi
+          
+      - name: Create a GitHub release
+        id: release
+        if: ${{ needs.version.outputs.new_tag }}
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          prerelease: ${{ needs.version.outputs.prerelease }}
+          tag_name: ${{ needs.version.outputs.new_tag }}
+          name: Release ${{ needs.version.outputs.new_tag }}
+          body: |
+            Docker pull command:
+            <pre><code> docker pull jfrog.local:8081/reg/${{ env.namespace }}/${{ github.event.repository.name }}:${{ needs.version.outputs.new_tag }} </code></pre>
+            
+      - name: set warning
+        shell: bash
+        run: |
+          STRING="New release: ${{ steps.release.outputs.url }}
+          Docker pull command:
+          docker pull jfrog.local:8081/reg/${{ env.namespace }}/${{ github.event.repository.name }}:${{ needs.version.outputs.new_tag }}"
+          STRING="${STRING//'%'/'%25'}"
+          STRING="${STRING//$'\n'/'%0A'}"
+          STRING="${STRING//$'\r'/'%0D'}"
+          echo "::warning::$STRING"
