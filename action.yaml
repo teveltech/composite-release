@@ -12,16 +12,18 @@ inputs:
     required: true
     description: 'The package namespace'
     
+runs:
+    using: "composite"
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
         uses: actions/checkout@v2
-        
+
       - name: git config
         run: |
           git config user.email "Tevel GitHub Runner"
           git config user.name "Tevel GitHub Runner"
-          
+
       # note: adding a message would create an annotated tag
       - name: Create Tag
         shell: bash
@@ -37,10 +39,10 @@ inputs:
               echo "New annotated tag: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/${{ inputs.new_tag }}"
             fi
           fi
-          
+
       - name: Create a GitHub release
         id: release
-#         if: ${{ inputs.new_tag }}
+    #         if: ${{ inputs.new_tag }}
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -51,7 +53,7 @@ inputs:
           body: |
             Docker pull command:
             <pre><code> docker pull jfrog.local:8081/reg/${{ inputs.namespace }}/${{ github.event.repository.name }}:${{ inputs.new_tag }} </code></pre>
-            
+
       - name: set warning
         shell: bash
         run: |
