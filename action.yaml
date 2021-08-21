@@ -1,7 +1,7 @@
 name: 'Release composite action'
 description: 'A composite action to handle git tag and github release'
 
-inputs:inputs:
+inputs:
   token:
     required: false
     description: 'A token to access private github repos'
@@ -15,6 +15,10 @@ inputs:inputs:
     required: true
     description: 'The package namespace'
     
+outputs:
+  url:
+    value: ${{ steps.release.outputs.url }}
+
 runs:
     using: "composite"
     steps:
