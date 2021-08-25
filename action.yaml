@@ -66,16 +66,18 @@ runs:
           name: Release ${{ inputs.new_tag }}
           files: ${{ inputs.files }}
           body: |
-            Docker pull command:
+            Docker pull command (if applicable):
             <pre><code> docker pull jfrog.local:8081/reg/${{ inputs.namespace }}/${{ github.event.repository.name }}:${{ inputs.new_tag }} </code></pre>
             ${{ inputs.changelog }}
 
       - name: set warning
         shell: bash
         run: |
-          STRING="New release: ${{ steps.release.outputs.url }}
-          Docker pull command:
-          docker pull jfrog.local:8081/reg/${{ inputs.namespace }}/${{ github.event.repository.name }}:${{ inputs.new_tag }}"
+          STRING="
+          New release: ${{ steps.release.outputs.url }}
+          Docker pull command (if applicable):
+          docker pull jfrog.local:8081/reg/${{ inputs.namespace }}/${{ github.event.repository.name }}:${{ inputs.new_tag }}
+          "
           STRING="${STRING//'%'/'%25'}"
           STRING="${STRING//$'\n'/'%0A'}"
           STRING="${STRING//$'\r'/'%0D'}"
