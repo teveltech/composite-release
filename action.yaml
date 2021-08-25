@@ -14,6 +14,12 @@ inputs:
   namespace:
     required: true
     description: 'The package namespace'
+  changelog:
+    required: false
+    description: 'The release changelog'
+  files:
+    required: false
+    description: 'Files to add to the release'
     
 outputs:
   url:
@@ -58,9 +64,11 @@ runs:
           prerelease: ${{ inputs.prerelease }}
           tag_name: ${{ inputs.new_tag }}
           name: Release ${{ inputs.new_tag }}
+          files: ${{ inputs.files }}
           body: |
             Docker pull command:
             <pre><code> docker pull jfrog.local:8081/reg/${{ inputs.namespace }}/${{ github.event.repository.name }}:${{ inputs.new_tag }} </code></pre>
+            ${{ inputs.changelog }}
 
       - name: set warning
         shell: bash
