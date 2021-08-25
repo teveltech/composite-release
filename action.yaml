@@ -58,8 +58,8 @@ runs:
         id: release
     #         if: ${{ inputs.new_tag }}
         uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ inputs.token }}
+#         env:
+#           GITHUB_TOKEN: ${{ inputs.token }}
         with:
           prerelease: ${{ inputs.prerelease }}
           tag_name: ${{ inputs.new_tag }}
