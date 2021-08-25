@@ -61,7 +61,7 @@ runs:
 #         env:
 #           GITHUB_TOKEN: ${{ inputs.token }}
         with:
-          token: ${{ inputs.token }}
+#           token: ${{ inputs.token }}
           prerelease: ${{ inputs.prerelease }}
           tag_name: ${{ inputs.new_tag }}
           name: Release ${{ inputs.new_tag }}
