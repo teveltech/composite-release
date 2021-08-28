@@ -76,8 +76,7 @@ runs:
       - name: set warning
         shell: bash
         run: |
-          STRING="
-          New release: ${{ steps.release.outputs.url }}
+          STRING="New release: ${{ steps.release.outputs.url }}
           ${{ inputs.warning }}
           "
           STRING="${STRING//'%'/'%25'}"
