@@ -20,6 +20,12 @@ inputs:
   files:
     required: false
     description: 'Files to add to the release'
+  body:
+    required: false
+    description: 'Text to add to the release body'
+  warning:
+    required: false
+    description: 'Text to add to workflow warning'
     
 outputs:
   url:
@@ -67,8 +73,7 @@ runs:
           name: Release ${{ inputs.new_tag }}
           files: ${{ inputs.files }}
           body: |
-            Docker pull command (if applicable):
-            <pre><code> docker pull jfrog.local:8081/reg/${{ inputs.namespace }}/${{ github.event.repository.name }}:${{ inputs.new_tag }} </code></pre>
+            ${{ inputs.body }}
             ${{ inputs.changelog }}
 
       - name: set warning
@@ -76,8 +81,7 @@ runs:
         run: |
           STRING="
           New release: ${{ steps.release.outputs.url }}
-          Docker pull command (if applicable):
-          docker pull jfrog.local:8081/reg/${{ inputs.namespace }}/${{ github.event.repository.name }}:${{ inputs.new_tag }}
+          ${{ inputs.warning }}
           "
           STRING="${STRING//'%'/'%25'}"
           STRING="${STRING//$'\n'/'%0A'}"
