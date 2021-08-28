@@ -47,12 +47,12 @@ runs:
         run: |
           if [ -n ${{ inputs.new_tag }} ]; then
             if [ '${{ inputs.prerelease }}' = 'true' ]; then
-              git tag ${{ inputs.new_tag }} &&
-              git push --force origin ${{ inputs.new_tag }} &&
+              git tag ${{ inputs.new_tag }}
+              git push --force origin ${{ inputs.new_tag }}
               echo "New lightweight tag: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/${{ inputs.new_tag }}"
             else
-              git tag -a ${{ inputs.new_tag }} -m "${{ github.event.head_commit.message }}" &&
-              git push --force origin ${{ inputs.new_tag }} &&
+              git tag -a ${{ inputs.new_tag }} -m "${{ github.event.head_commit.message }}"
+              git push --force origin ${{ inputs.new_tag }}
               echo "New annotated tag: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/${{ inputs.new_tag }}"
             fi
           fi
