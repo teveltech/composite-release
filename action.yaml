@@ -11,9 +11,6 @@ inputs:
   prerelease:
     required: true
     description: 'Whether the release is a pre-release or not'
-  namespace:
-    required: true
-    description: 'The package namespace'
   changelog:
     required: false
     description: 'The release changelog'
