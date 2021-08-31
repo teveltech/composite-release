@@ -5,7 +5,7 @@ inputs:
   token:
     required: false
     description: 'A token to access private github repos'
-  new_tag:
+  new-tag:
     required: true
     description: 'The new tag to push'
   prerelease:
@@ -45,29 +45,29 @@ runs:
       - name: Create Tag
         shell: bash
         run: |
-          if [ -n ${{ inputs.new_tag }} ]; then
+          if [ -n ${{ inputs.new-tag }} ]; then
             if [ '${{ inputs.prerelease }}' = 'true' ]; then
-              git tag ${{ inputs.new_tag }}
-              git push --force origin ${{ inputs.new_tag }}
-              echo "New lightweight tag: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/${{ inputs.new_tag }}"
+              git tag ${{ inputs.new-tag }}
+              git push --force origin ${{ inputs.new-tag }}
+              echo "New lightweight tag: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/${{ inputs.new-tag }}"
             else
-              git tag -a ${{ inputs.new_tag }} -m "${{ github.event.head_commit.message }}"
-              git push --force origin ${{ inputs.new_tag }}
-              echo "New annotated tag: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/${{ inputs.new_tag }}"
+              git tag -a ${{ inputs.new-tag }} -m "${{ github.event.head_commit.message }}"
+              git push --force origin ${{ inputs.new-tag }}
+              echo "New annotated tag: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/${{ inputs.new-tag }}"
             fi
           fi
 
       - name: Create a GitHub release
         id: release
-    #         if: ${{ inputs.new_tag }}
+    #         if: ${{ inputs.new-tag }}
         uses: softprops/action-gh-release@v1
 #         env:
 #           GITHUB_TOKEN: ${{ inputs.token }}
         with:
 #           token: ${{ inputs.token }}
           prerelease: ${{ inputs.prerelease }}
-          tag_name: ${{ inputs.new_tag }}
-          name: Release ${{ inputs.new_tag }}
+          tag_name: ${{ inputs.new-tag }}
+          name: Release ${{ inputs.new-tag }}
           files: ${{ inputs.files }}
           body: |
             ${{ inputs.body }}
