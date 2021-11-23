@@ -23,6 +23,12 @@ inputs:
   warning:
     required: false
     description: 'Text to add to workflow warning'
+  error:
+    required: false
+    description: 'Text to add to workflow error'
+  notice:
+    required: false
+    description: 'Text to add to workflow notice'
     
 outputs:
   url:
@@ -74,12 +80,36 @@ runs:
             ${{ inputs.changelog }}
 
       - name: set warning
+        if: inputs.warning
         shell: bash
         run: |
-          STRING="New release: ${{ steps.release.outputs.url }}
+          STRING="
           ${{ inputs.warning }}
           "
           STRING="${STRING//'%'/'%25'}"
           STRING="${STRING//$'\n'/'%0A'}"
           STRING="${STRING//$'\r'/'%0D'}"
           echo "::warning::$STRING"
+          
+      - name: set error
+        if: inputs.error
+        shell: bash
+        run: |
+          STRING="
+          ${{ inputs.error }}
+          "
+          STRING="${STRING//'%'/'%25'}"
+          STRING="${STRING//$'\n'/'%0A'}"
+          STRING="${STRING//$'\r'/'%0D'}"
+          echo "::error::$STRING"
+          
+      - name: set notice
+        shell: bash
+        run: |
+          STRING="New release: ${{ steps.release.outputs.url }}
+          ${{ inputs.notice }}
+          "
+          STRING="${STRING//'%'/'%25'}"
+          STRING="${STRING//$'\n'/'%0A'}"
+          STRING="${STRING//$'\r'/'%0D'}"
+          echo "::notice::$STRING"
