@@ -80,7 +80,7 @@ runs:
             ${{ inputs.changelog }}
 
       - name: set warning
-        if: inputs.warning
+        if: ${{ inputs.warning }}
         shell: bash
         run: |
           STRING="
@@ -92,7 +92,7 @@ runs:
           echo "::warning::$STRING"
           
       - name: set error
-        if: inputs.error
+        if: ${{ inputs.error }}
         shell: bash
         run: |
           STRING="
