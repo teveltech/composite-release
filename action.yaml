@@ -32,6 +32,7 @@ inputs:
     
 outputs:
   url:
+    description: 'The release url'
     value: ${{ steps.release.outputs.url }}
 
 runs:
@@ -83,33 +84,33 @@ runs:
         if: ${{ inputs.warning }}
         shell: bash
         run: |
-          STRING="
+          WARNING="
           ${{ inputs.warning }}
           "
-          STRING="${STRING//'%'/'%25'}"
-          STRING="${STRING//$'\n'/'%0A'}"
-          STRING="${STRING//$'\r'/'%0D'}"
-          echo "::warning::$STRING"
+          WARNING="${WARNING//'%'/'%25'}"
+          WARNING="${WARNING//$'\n'/'%0A'}"
+          WARNING="${WARNING//$'\r'/'%0D'}"
+          echo "::warning::$WARNING"
           
       - name: set error
         if: ${{ inputs.error }}
         shell: bash
         run: |
-          STRING="
+          ERROR="
           ${{ inputs.error }}
           "
-          STRING="${STRING//'%'/'%25'}"
-          STRING="${STRING//$'\n'/'%0A'}"
-          STRING="${STRING//$'\r'/'%0D'}"
-          echo "::error::$STRING"
+          ERROR="${ERROR//'%'/'%25'}"
+          ERROR="${ERROR//$'\n'/'%0A'}"
+          ERROR="${ERROR//$'\r'/'%0D'}"
+          echo "::error::$ERROR"
           
       - name: set notice
         shell: bash
         run: |
-          STRING="New release: ${{ steps.release.outputs.url }}
+          NOTICE="New release: ${{ steps.release.outputs.url }}
           ${{ inputs.notice }}
           "
-          STRING="${STRING//'%'/'%25'}"
-          STRING="${STRING//$'\n'/'%0A'}"
-          STRING="${STRING//$'\r'/'%0D'}"
-          echo "::notice::$STRING"
+          NOTICE="${NOTICE//'%'/'%25'}"
+          NOTICE="${NOTICE//$'\n'/'%0A'}"
+          NOTICE="${NOTICE//$'\r'/'%0D'}"
+          echo "::notice::$NOTICE"
