@@ -47,6 +47,7 @@ runs:
         run: |
           git config user.email "Tevel GitHub Runner"
           git config user.name "Tevel GitHub Runner"
+          git config 'lfs.http://git-server.com/user/repo.locksverify' false
 
       # note: adding a message would create an annotated tag
       - name: Create Tag
