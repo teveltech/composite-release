@@ -47,7 +47,8 @@ runs:
         run: |
           git config user.email "Tevel GitHub Runner"
           git config user.name "Tevel GitHub Runner"
-          git config 'lfs.$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.locksverify' false
+          lfs_config=$(echo "lfs.$GITHUB_SERVER/$GITHUB_REPOSITORY.locksverify")
+          git config $lfs_config false
 
       # note: adding a message would create an annotated tag
       - name: Create Tag
