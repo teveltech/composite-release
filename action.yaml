@@ -44,7 +44,7 @@ runs:
       - name: workspace
         shell: bash
         run: |
-          cd ${{ github.workspace }}
+          cd $GITHUB_WORKSPACE
       - name: git config
         shell: bash
         run: |
