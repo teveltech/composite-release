@@ -49,9 +49,6 @@ runs:
       - name: git config
         shell: bash
         run: |
-
-          pwd
-          ls -la
           git config user.email "Tevel GitHub Runner"
           git config user.name "Tevel GitHub Runner"
           lfs_config=$(echo "lfs.$GITHUB_SERVER/$GITHUB_REPOSITORY.git/info/lfs.locksverify")
