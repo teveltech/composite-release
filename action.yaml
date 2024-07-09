@@ -45,9 +45,7 @@ runs:
         shell: bash
         run: |
           cd $GITHUB_WORKSPACE
-          if [[ ${{ runner.name }} == *"scale"* ]]; then
-            sudo su
-          fi
+          git config --global --add safe.directory $GITHUB_WORKSPACE
       - name: git config
         shell: bash
         run: |
