@@ -41,7 +41,11 @@ runs:
 #       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 #       - name: Checkout
 #         uses: actions/checkout@v2
-
+      - name: workspace
+        shell: bash
+        run: |
+          cd $GITHUB_WORKSPACE
+          git config --global --add safe.directory $GITHUB_WORKSPACE
       - name: git config
         shell: bash
         run: |
