@@ -45,12 +45,13 @@ runs:
         shell: bash
         run: |
           cd $GITHUB_WORKSPACE
-      - name: git config
-        shell: bash
-        run: |
           if [[ ${{ runner.name }} == *"scale"* ]]; then
             sudo su
           fi
+      - name: git config
+        shell: bash
+        run: |
+
           pwd
           ls -la
           git config user.email "Tevel GitHub Runner"
