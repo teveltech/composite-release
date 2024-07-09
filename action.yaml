@@ -48,6 +48,9 @@ runs:
       - name: git config
         shell: bash
         run: |
+          if [[ ${{ runner.name }} == *"scale"* ]]; then
+            sudo su
+          fi
           pwd
           ls -la
           git config user.email "Tevel GitHub Runner"
