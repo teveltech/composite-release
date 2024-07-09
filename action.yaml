@@ -41,7 +41,10 @@ runs:
 #       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 #       - name: Checkout
 #         uses: actions/checkout@v2
-
+      - name: workspace
+        shell: bash
+        run: |
+          cd ${{ github.workspace }}
       - name: git config
         shell: bash
         run: |
