@@ -73,7 +73,7 @@ runs:
       - name: Create a GitHub release
         id: release
     #         if: ${{ inputs.new-tag }}
-        uses: softprops/action-gh-release@v2
+        uses: ncipollo/release-action@v1
 #         env:
 #           GITHUB_TOKEN: ${{ inputs.token }}
         with:
