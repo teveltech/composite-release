@@ -79,9 +79,9 @@ runs:
         with:
 #           token: ${{ inputs.token }}
           prerelease: ${{ inputs.prerelease }}
-          tag_name: ${{ inputs.new-tag }}
+          tag: ${{ inputs.new-tag }}
           name: Release ${{ inputs.new-tag }}
-          files: ${{ inputs.files }}
+          artifacts: ${{ inputs.files }}
           body: |
             ${{ inputs.body }}
             ${{ inputs.changelog }}
